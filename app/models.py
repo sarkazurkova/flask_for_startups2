@@ -63,3 +63,12 @@ class User(UserMixin, Base):
 
     def __repr__(self):
         return f"<User {self.email}>"
+
+class Uzivatele(Base):
+    __tablename__ = "uzivatele"
+    user_id = Column(Integer,  primary_key=True)
+    name = Column(String(50), nullable=False)
+    surename = Column(String(50), nullable=False)
+    created_at = Column(DateTime, nullable=False, server_default=func.now())
+
+

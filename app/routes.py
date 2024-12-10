@@ -1,7 +1,7 @@
 # Standard Library imports
 
 # Core Flask imports
-from flask import Blueprint
+from flask import Blueprint, render_template
 
 # Third-party imports
 
@@ -13,13 +13,30 @@ from .views import (
     account_management_views,
     static_views,
 )
-from .models import User
+from .models import User,Uzivatele
 
 bp = Blueprint('routes', __name__)
 
 # alias
 db = db_manager.session
+from flask_wtf import FlaskForm, RecaptchaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField,DateField
+from wtforms.validators import DataRequired, Email, EqualTo, Length,InputRequired
 
+class FormFormular(FlaskForm):
+    name = StringField('Name', validators=[ InputRequired(message="You can't leave this empty")])
+    surename = StringField('Surename', validators=[ InputRequired(message="You can't leave this empty")])
+
+@bp.route("/formular", methods=["GET", "POST"])
+def formular():
+    form=FormFormular()
+    if form.validate_on_submit():
+        print(form.name.data)
+        new_user = Uzivatele(name=form.name.data, surename=form.surename.data)
+        db.add(new_user)
+        db.commit()
+        return "Formular submitted"
+    return render_template("formular.html",form=form)
 # Request management
 @bp.before_app_request
 def before_request():
