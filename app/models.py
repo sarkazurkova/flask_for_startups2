@@ -72,3 +72,9 @@ class Uzivatele(Base):
     created_at = Column(DateTime, nullable=False, server_default=func.now())
 
 
+class Spz(Base):
+    __tablename__ = "spz"
+    user_id = Column(Integer,  primary_key=True)
+    spz = Column(String(50), nullable=False)
+    typ_vozidla = Column(String(50), nullable=False)
+    created_at = Column(DateTime, nullable=False, server_default=func.now())
